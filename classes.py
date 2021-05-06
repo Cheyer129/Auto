@@ -251,6 +251,20 @@ class Payoffs:
             CoopHELOCNotice.paragraphs[21].runs[2].font.name = 'Times New Roman'
             CoopHELOCNotice.save('News/{} - {} - Coop30DayNotice.docx'.format(self.borrower, self.loan_number))
 
+    # def send_notice(self):
+    #     message = outlook.CreateItem(0)
+    #     message.To = self.contact_email
+    #     # message.CC = 'mweinstein@tatpc.com'
+    #     message.Subject = '{} - {} - Initial Notice'.format(self.borrower, self.loan_number)
+    #     message.HTMLBody = CemaEmail
+    #     message.Attachments.Add('{}/News/{} - {} - Invoice.docx'.format(CurrentDirectory, Borrower, LoanNumber))
+    #     message.Attachments.Add('{}/News/{} - {} - CEMA30DayNotice.docx'.format(CurrentDirectory, Borrower, LoanNumber))
+    #     message.Send()
+    #     window['Output'].update('CEMA Initial Notice sent to:')
+    #     window['Output2'].update('{} - {}'.format(ContactEmail, datetime.datetime.now().strftime("%m/%d/%Y at %I:%M:%S %p")))
+
+
+
 def convert_to_pdf(input_doc, output_pdf):
     word = comtypes.client.CreateObject('Word.Application')
     tempdoc = word.Documents.Open(os.path.abspath(input_doc))
