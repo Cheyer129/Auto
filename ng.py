@@ -177,7 +177,7 @@ while True:
             if values['PDF'] == True and values['Notice'] == True:
                 message = outlook.CreateItem(0)
                 message.To = ContactEmail
-                message.CC = 'mweinstein@tatpc.com'
+                # message.CC = 'mweinstein@tatpc.com'
                 message.Subject = '{} - {} - Initial Notice'.format(Borrower, LoanNumber)
                 message.HTMLBody = CemaEmail
                 message.Attachments.Add('{}/News/{} - {} - Invoice.pdf'.format(CurrentDirectory, Borrower, LoanNumber))
@@ -189,7 +189,7 @@ while True:
             if values['PDF'] == False and values['Notice'] == True:
                 message = outlook.CreateItem(0)
                 message.To = ContactEmail
-                message.CC = 'mweinstein@tatpc.com'
+                # message.CC = 'mweinstein@tatpc.com'
                 message.Subject = '{} - {} - Initial Notice'.format(Borrower, LoanNumber)
                 message.HTMLBody = CemaEmail
                 message.Attachments.Add('{}/News/{} - {} - Invoice.docx'.format(CurrentDirectory, Borrower, LoanNumber))
@@ -293,7 +293,7 @@ while True:
             if values['PDF'] == True and values['Notice'] == True:
                 message = outlook.CreateItem(0)
                 message.To = ContactEmail
-                message.CC = 'mweinstein@tatpc.com'
+                # message.CC = 'mweinstein@tatpc.com'
                 message.Subject = '{} - {} - Initial Notice'.format(Borrower, LoanNumber)
                 message.HTMLBody = CemaEmail
                 message.Attachments.Add('{}/News/{} - {} - Invoice.pdf'.format(CurrentDirectory, Borrower, LoanNumber))
@@ -305,7 +305,7 @@ while True:
             if values['PDF'] == False and values['Notice'] == True:
                 message = outlook.CreateItem(0)
                 message.To = ContactEmail
-                message.CC = 'mweinstein@tatpc.com'
+                # message.CC = 'mweinstein@tatpc.com'
                 message.Subject = '{} - {} - Initial Notice'.format(Borrower, LoanNumber)
                 message.HTMLBody = CemaEmail
                 message.Attachments.Add('{}/News/{} - {} - Invoice.docx'.format(CurrentDirectory, Borrower, LoanNumber))
@@ -402,7 +402,7 @@ while True:
             if values['PDF'] == True and values['Notice'] == True:
                 message = outlook.CreateItem(0)
                 message.To = ContactEmail
-                message.CC = 'mweinstein@tatpc.com'
+                # message.CC = 'mweinstein@tatpc.com'
                 message.Subject = '{} - {} - Initial Notice'.format(Borrower, LoanNumber)
                 message.HTMLBody = CoopEmail
                 message.Attachments.Add('{}/News/{} - {} - Invoice.pdf'.format(CurrentDirectory, Borrower, LoanNumber))
@@ -414,7 +414,7 @@ while True:
             if values['PDF'] == False and values['Notice'] == True:
                 message = outlook.CreateItem(0)
                 message.To = ContactEmail
-                message.CC = 'mweinstein@tatpc.com'
+                # message.CC = 'mweinstein@tatpc.com'
                 message.Subject = '{} - {} - Initial Notice'.format(Borrower, LoanNumber)
                 message.HTMLBody = CoopEmail
                 message.Attachments.Add('{}/News/{} - {} - Invoice.docx'.format(CurrentDirectory, Borrower, LoanNumber))
@@ -511,7 +511,7 @@ while True:
             if values['PDF'] == True and values['Notice'] == True:
                 message = outlook.CreateItem(0)
                 message.To = ContactEmail
-                message.CC = 'mweinstein@tatpc.com'
+                # message.CC = 'mweinstein@tatpc.com'
                 message.Subject = '{} - {} - Initial Notice'.format(Borrower, LoanNumber)
                 message.HTMLBody = CoopEmail
                 message.Attachments.Add('{}/News/{} - {} - Invoice.pdf'.format(CurrentDirectory, Borrower, LoanNumber))
@@ -523,7 +523,7 @@ while True:
             if values['PDF'] == False and values['Notice'] == True:
                 message = outlook.CreateItem(0)
                 message.To = ContactEmail
-                message.CC = 'mweinstein@tatpc.com'
+                # message.CC = 'mweinstein@tatpc.com'
                 message.Subject = '{} - {} - Initial Notice'.format(Borrower, LoanNumber)
                 message.HTMLBody = CoopEmail
                 message.Attachments.Add('{}/News/{} - {} - Invoice.docx'.format(CurrentDirectory, Borrower, LoanNumber))
@@ -621,7 +621,7 @@ while True:
             if values['PDF'] == True and values['Notice'] == True:
                 message = outlook.CreateItem(0)
                 message.To = ContactEmail
-                message.CC = 'mweinstein@tatpc.com'
+                # message.CC = 'mweinstein@tatpc.com'
                 message.Subject = '{} - {} - Initial Notice'.format(Borrower, LoanNumber)
                 message.HTMLBody = CoopEmail
                 message.Attachments.Add('{}/News/{} - {} - Invoice.pdf'.format(CurrentDirectory, Borrower, LoanNumber))
@@ -633,7 +633,7 @@ while True:
             if values['PDF'] == False and values['Notice'] == True:
                 message = outlook.CreateItem(0)
                 message.To = ContactEmail
-                message.CC = 'mweinstein@tatpc.com'
+                # message.CC = 'mweinstein@tatpc.com'
                 message.Subject = '{} - {} - Initial Notice'.format(Borrower, LoanNumber)
                 message.HTMLBody = CoopEmail
                 message.Attachments.Add('{}/News/{} - {} - Invoice.docx'.format(CurrentDirectory, Borrower, LoanNumber))
@@ -660,4 +660,3 @@ while True:
         window['Output'].update('Fields Cleared')
 
 window.close()
-
