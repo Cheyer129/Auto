@@ -80,7 +80,7 @@ class Payoffs:
         self.city_state_zip = city_state_zip
 
     def add_to_excel(self):
-        if self.loan_type == 'CEMA' or self.loan_type == 'CEMA HELOC':
+        if self.loan_type == 'CEMA':
             newRowLocation = ws.max_row + 1
             ws.cell(column = 1, row = newRowLocation, value = self.borrower)
             ws.cell(column = 2, row = newRowLocation, value = self.loan_number)
@@ -89,20 +89,38 @@ class Payoffs:
             ws.cell(column = 4, row = newRowLocation, value = todaysdate.strftime("%m/%d/%Y"))
             wb.save('NEWS_Status.xlsx')
             wb.close()
-        elif self.loan_type == 'Coop' or self.loan_type == 'Coop HELOC' or self.loan_type == 'Coop 1st + HELOC':
+        elif self.loan_type == 'CEMA HELOC':
             newRowLocation = ws.max_row + 1
             ws.cell(column = 1, row = newRowLocation, value = self.borrower)
-            ws.cell(column = 2, row = newRowLocation, value = self.loan_number)
+            ws.cell(column = 2, row = newRowLocation, value = self.heloc_number)
+            ws.cell(column = 5, row = newRowLocation, value = self.contact)
+            ws.cell(column = 6, row = newRowLocation, value = self.contact_email)
+            ws.cell(column = 4, row = newRowLocation, value = todaysdate.strftime("%m/%d/%Y"))
+            wb.save('NEWS_Status.xlsx')
+            wb.close()
+        elif self.loan_type == 'Coop' or self.loan_type == 'Coop 1st + HELOC':
+            newRowLocation = ws.max_row + 1
+            ws.cell(column = 1, row = newRowLocation, value = self.borrower)
+            ws.cell(column = 2, row = newRowLocation, value = self.heloc_number)
+            ws.cell(column = 5, row = newRowLocation, value = self.contact)
+            ws.cell(column = 6, row = newRowLocation, value = self.contact_email)
+            ws.cell(column = 3, row = newRowLocation, value = todaysdate.strftime("%m/%d/%Y"))
+            wb.save('NEWS_Status.xlsx')
+            wb.close()
+        elif self.loan_type == 'Coop HELOC':
+            newRowLocation = ws.max_row + 1
+            ws.cell(column = 1, row = newRowLocation, value = self.borrower)
+            ws.cell(column = 2, row = newRowLocation, value = self.heloc_number)
             ws.cell(column = 5, row = newRowLocation, value = self.contact)
             ws.cell(column = 6, row = newRowLocation, value = self.contact_email)
             ws.cell(column = 3, row = newRowLocation, value = todaysdate.strftime("%m/%d/%Y"))
             wb.save('NEWS_Status.xlsx')
             wb.close()
     
-    def make_invoice(self, fee):
+    def make_invoice(self, number, fee):
         Invoice.paragraphs[18].runs[2].text = self.borrower
         Invoice.paragraphs[18].runs[2].font.name = 'Times New Roman'
-        Invoice.paragraphs[18].runs[8].text = self.loan_number
+        Invoice.paragraphs[18].runs[8].text = number
         Invoice.paragraphs[18].runs[8].font.name = 'Times New Roman'
         Invoice.paragraphs[12].text = datetime.datetime.now().strftime("%B %d, %Y")
         Invoice.paragraphs[12].runs[0].font.name = 'Times New Roman'
@@ -114,13 +132,13 @@ class Payoffs:
         Invoice.paragraphs[15].runs[0].font.name = 'Times New Roman'
         Invoice.paragraphs[27].runs[3].text = str(fee)
         Invoice.paragraphs[27].runs[3].font.name = 'Times New Roman'
-        Invoice.save('News/{} - {} - Invoice.docx'.format(self.borrower, self.loan_number))
+        Invoice.save('News/{} - {} - Invoice.docx'.format(self.borrower, number))
 
-    def make_update_sheet(self):
+    def make_update_sheet(self, number):
         if self.loan_type == 'CEMA' or self.loan_type == 'CEMA HELOC':
             CemaUpdateSheet.paragraphs[0].runs[0].text = self.borrower
             CemaUpdateSheet.paragraphs[0].runs[0].font.name = 'Times New Roman'
-            CemaUpdateSheet.paragraphs[0].runs[5].text = self.loan_number
+            CemaUpdateSheet.paragraphs[0].runs[5].text = number
             CemaUpdateSheet.paragraphs[0].runs[5].font.name = 'Times New Roman'
             CemaUpdateSheet.paragraphs[16].runs[2].text = self.contact
             CemaUpdateSheet.paragraphs[16].runs[2].font.name = 'Times New Roman'
@@ -128,11 +146,11 @@ class Payoffs:
             CemaUpdateSheet.paragraphs[17].runs[1].font.name = 'Times New Roman'
             CemaUpdateSheet.paragraphs[18].runs[1].text = self.phone_number
             CemaUpdateSheet.paragraphs[18].runs[1].font.name = 'Times New Roman'
-            CemaUpdateSheet.save('News/{} - {} - UpdateSheet.docx'.format(self.borrower, self.loan_number))
+            CemaUpdateSheet.save('News/{} - {} - UpdateSheet.docx'.format(self.borrower, number))
         elif self.loan_type == 'Coop' or self.loan_type == 'Coop HELOC':
             CoopUpdateSheet.paragraphs[0].runs[0].text = self.borrower
             CoopUpdateSheet.paragraphs[0].runs[0].font.name = 'Times New Roman'
-            CoopUpdateSheet.paragraphs[0].runs[4].text = self.loan_number
+            CoopUpdateSheet.paragraphs[0].runs[4].text = number
             CoopUpdateSheet.paragraphs[0].runs[4].font.name = 'Times New Roman'
             CoopUpdateSheet.paragraphs[14].runs[3].text = self.contact
             CoopUpdateSheet.paragraphs[14].runs[3].font.name = 'Times New Roman'
@@ -142,11 +160,11 @@ class Payoffs:
             CoopUpdateSheet.paragraphs[11].runs[3].font.name = 'Times New Roman'
             CoopUpdateSheet.paragraphs[16].runs[1].text = self.phone_number
             CoopUpdateSheet.paragraphs[16].runs[1].font.name = 'Times New Roman'
-            CoopUpdateSheet.save('News/{} - {} - UpdateSheet.docx'.format(self.borrower, self.loan_number))
+            CoopUpdateSheet.save('News/{} - {} - UpdateSheet.docx'.format(self.borrower, number))
         elif self.loan_type == 'Coop 1st + HELOC':
             CoopUpdateSheet.paragraphs[0].runs[0].text = self.borrower
             CoopUpdateSheet.paragraphs[0].runs[0].font.name = 'Times New Roman'
-            CoopUpdateSheet.paragraphs[0].runs[4].text = self.loan_number
+            CoopUpdateSheet.paragraphs[0].runs[4].text = number
             CoopUpdateSheet.paragraphs[0].runs[4].font.name = 'Times New Roman'
             CoopUpdateSheet.paragraphs[14].runs[3].text = self.contact
             CoopUpdateSheet.paragraphs[14].runs[3].font.name = 'Times New Roman'
@@ -156,9 +174,9 @@ class Payoffs:
             CoopUpdateSheet.paragraphs[11].runs[3].font.name = 'Times New Roman'
             CoopUpdateSheet.paragraphs[16].runs[1].text = self.phone_number
             CoopUpdateSheet.paragraphs[16].runs[1].font.name = 'Times New Roman'
-            CoopUpdateSheet.save('News/{} - {} - UpdateSheet.docx'.format(self.borrower, self.loan_number))
+            CoopUpdateSheet.save('News/{} - {} - UpdateSheet.docx'.format(self.borrower, number))
     
-    def make_scheduling_form(self):
+    def make_scheduling_form(self, number):
         if self.loan_type == 'CEMA' or self.loan_type == 'CEMA HELOC':
             CemaScheduling.paragraphs[9].runs[2].text = self.contact
             CemaScheduling.paragraphs[9].runs[2].font.name = 'Times New Roman'
@@ -166,9 +184,9 @@ class Payoffs:
             CemaScheduling.paragraphs[10].runs[7].font.name = 'Times New Roman'
             CemaScheduling.paragraphs[13].runs[5].text = self.borrower
             CemaScheduling.paragraphs[13].runs[5].font.name = 'Times New Roman'
-            CemaScheduling.paragraphs[13].runs[11].text = self.loan_number
+            CemaScheduling.paragraphs[13].runs[11].text = number
             CemaScheduling.paragraphs[13].runs[11].font.name = 'Times New Roman'
-            CemaScheduling.save('Scheduling Forms/{} - {} - Scheduling Form.docx'.format(self.borrower, self.loan_number))
+            CemaScheduling.save('Scheduling Forms/{} - {} - Scheduling Form.docx'.format(self.borrower, number))
         if self.loan_type == 'Coop' or self.loan_type == 'Coop HELOC' or self.loan_type == 'Coop 1st + HELOC':
             CoopScheduling.paragraphs[9].runs[2].text = self.contact
             CoopScheduling.paragraphs[9].runs[2].font.name = 'Times New Roman'
@@ -176,8 +194,11 @@ class Payoffs:
             CoopScheduling.paragraphs[10].runs[6].font.name = 'Times New Roman'
             CoopScheduling.paragraphs[13].runs[4].text = self.borrower
             CoopScheduling.paragraphs[13].runs[4].font.name = 'Times New Roman'
-            if self.loan_type == 'Coop' or self.loan_type == 'Coop HELOC':
+            if self.loan_type == 'Coop':
                 CoopScheduling.paragraphs[13].runs[11].text = self.loan_number
+                CoopScheduling.paragraphs[13].runs[11].font.name = 'Times New Roman'
+            elif self.loan_type == 'Coop HELOC':
+                CoopScheduling.paragraphs[13].runs[11].text = self.heloc_number
                 CoopScheduling.paragraphs[13].runs[11].font.name = 'Times New Roman'
             elif self.loan_type == 'Coop 1st + HELOC':
                 CoopScheduling.paragraphs[13].runs[11].text = '{} & {}'.format(self.loan_number, self.heloc_number)
@@ -206,7 +227,7 @@ class Payoffs:
             CemaHELOCNotice.paragraphs[15].runs[2].font.name = 'Times New Roman'
             CemaHELOCNotice.paragraphs[17].runs[3].text = self.borrower
             CemaHELOCNotice.paragraphs[17].runs[3].font.name = 'Times New Roman'
-            CemaHELOCNotice.paragraphs[17].runs[8].text = self.loan_number
+            CemaHELOCNotice.paragraphs[17].runs[8].text = self.heloc_number
             CemaHELOCNotice.paragraphs[17].runs[8].font.name = 'Times New Roman'
             CemaHELOCNotice.save('News/{} - {} - CEMA30DayNotice.docx'.format(self.borrower, self.loan_number))
         elif self.loan_type == 'Coop':
@@ -248,9 +269,9 @@ class Payoffs:
             CoopHELOCNotice.paragraphs[17].runs[2].font.name = 'Times New Roman'
             CoopHELOCNotice.paragraphs[19].runs[2].text = ''
             CoopHELOCNotice.paragraphs[19].runs[2].font.name = 'Times New Roman'
-            CoopHELOCNotice.paragraphs[21].runs[2].text = self.loan_number
+            CoopHELOCNotice.paragraphs[21].runs[2].text = self.heloc_number
             CoopHELOCNotice.paragraphs[21].runs[2].font.name = 'Times New Roman'
-            CoopHELOCNotice.save('News/{} - {} - Coop30DayNotice.docx'.format(self.borrower, self.loan_number))
+            CoopHELOCNotice.save('News/{} - {} - Coop30DayNotice.docx'.format(self.borrower, self.heloc_number))
 
     # def send_notice(self):
     #     message = outlook.CreateItem(0)
@@ -294,8 +315,8 @@ while True:
 
         # Determining Loan Type
         if values['LoanType'] == 'CEMA':
-            payoff.add_to_excel()
-            payoff.make_invoice(250)
+            payoff.add_to_excel(payoff.loan_number)
+            payoff.make_invoice(payoff.loan_number, 250)
             if values['PDF'] == True:
                 convert_to_pdf('News/{} - {} - Invoice.docx'.format(payoff.borrower, payoff.loan_number), 
                                'News/{} - {} - Invoice.pdf'.format(payoff.borrower, payoff.loan_number)
@@ -305,33 +326,33 @@ while True:
                 convert_to_pdf('News/{} - {} - CEMA30DayNotice.docx'.format(payoff.borrower, payoff.loan_number), 
                                'News/{} - {} - CEMA30DayNotice.pdf'.format(payoff.borrower, payoff.loan_number)
                                )
-            payoff.make_update_sheet()
+            payoff.make_update_sheet(payoff.loan_number)
             if values['PDF'] == True:
                 convert_to_pdf('News/{} - {} - UpdateSheet.docx'.format(payoff.borrower, payoff.loan_number), 
                                'News/{} - {} - UpdateSheet.pdf'.format(payoff.borrower, payoff.loan_number)
                                )
-            payoff.make_scheduling_form()
+            payoff.make_scheduling_form(payoff.loan_number)
         elif values['LoanType'] == 'CEMA HELOC':
-            payoff.add_to_excel()
-            payoff.make_invoice(250)
+            payoff.add_to_excel(payoff.heloc_number)
+            payoff.make_invoice(payoff.heloc_number, 250)
             if values['PDF'] == True:
-                convert_to_pdf('News/{} - {} - Invoice.docx'.format(payoff.borrower, payoff.loan_number), 
-                               'News/{} - {} - Invoice.pdf'.format(payoff.borrower, payoff.loan_number)
+                convert_to_pdf('News/{} - {} - Invoice.docx'.format(payoff.borrower, payoff.heloc_number), 
+                               'News/{} - {} - Invoice.pdf'.format(payoff.borrower, payoff.heloc_number)
                                )
             payoff.make_initial_notice()
             if values['PDF'] == True:
-                convert_to_pdf('News/{} - {} - CEMA30DayNotice.docx'.format(payoff.borrower, payoff.loan_number), 
-                               'News/{} - {} - CEMA30DayNotice.pdf'.format(payoff.borrower, payoff.loan_number)
+                convert_to_pdf('News/{} - {} - CEMA30DayNotice.docx'.format(payoff.borrower, payoff.heloc_number), 
+                               'News/{} - {} - CEMA30DayNotice.pdf'.format(payoff.borrower, payoff.heloc_number)
                                )
-            payoff.make_update_sheet()
+            payoff.make_update_sheet(payoff.heloc_number)
             if values['PDF'] == True:
-                convert_to_pdf('News/{} - {} - UpdateSheet.docx'.format(payoff.borrower, payoff.loan_number), 
-                               'News/{} - {} - UpdateSheet.pdf'.format(payoff.borrower, payoff.loan_number)
+                convert_to_pdf('News/{} - {} - UpdateSheet.docx'.format(payoff.borrower, payoff.heloc_number), 
+                               'News/{} - {} - UpdateSheet.pdf'.format(payoff.borrower, payoff.heloc_number)
                                )
-            payoff.make_scheduling_form()
+            payoff.make_scheduling_form(payoff.heloc_number)
         elif values['LoanType'] == 'Coop':
-            payoff.add_to_excel()
-            payoff.make_invoice(250)
+            payoff.add_to_excel(payoff.loan_number)
+            payoff.make_invoice(payoff.loan_number, 250)
             if values['PDF'] == True:
                 convert_to_pdf('News/{} - {} - Invoice.docx'.format(payoff.borrower, payoff.loan_number), 
                                'News/{} - {} - Invoice.pdf'.format(payoff.borrower, payoff.loan_number)
@@ -341,15 +362,15 @@ while True:
                 convert_to_pdf('News/{} - {} - Coop30DayNotice.docx'.format(payoff.borrower, payoff.loan_number), 
                                'News/{} - {} - Coop30DayNotice.pdf'.format(payoff.borrower, payoff.loan_number)
                                )
-            payoff.make_update_sheet()
+            payoff.make_update_sheet(payoff.loan_number)
             if values['PDF'] == True:
                 convert_to_pdf('News/{} - {} - UpdateSheet.docx'.format(payoff.borrower, payoff.loan_number), 
                                'News/{} - {} - UpdateSheet.pdf'.format(payoff.borrower, payoff.loan_number)
                                )
-            payoff.make_scheduling_form()
+            payoff.make_scheduling_form(payoff.loan_number)
         elif values['LoanType'] == 'Coop 1st + HELOC':
-            payoff.add_to_excel()
-            payoff.make_invoice(400)
+            payoff.add_to_excel(payoff.loan_number)
+            payoff.make_invoice('{} & {}'.format(payoff.loan_number, payoff.heloc_number), 400)
             if values['PDF'] == True:
                 convert_to_pdf('News/{} - {} - Invoice.docx'.format(payoff.borrower, payoff.loan_number), 
                                'News/{} - {} - Invoice.pdf'.format(payoff.borrower, payoff.loan_number)
@@ -359,15 +380,15 @@ while True:
                 convert_to_pdf('News/{} - {} - Coop30DayNotice.docx'.format(payoff.borrower, payoff.loan_number), 
                                'News/{} - {} - Coop30DayNotice.pdf'.format(payoff.borrower, payoff.loan_number)
                                )
-            payoff.make_update_sheet()
+            payoff.make_update_sheet(payoff.loan_number)
             if values['PDF'] == True:
                 convert_to_pdf('News/{} - {} - UpdateSheet.docx'.format(payoff.borrower, payoff.loan_number), 
                                'News/{} - {} - UpdateSheet.pdf'.format(payoff.borrower, payoff.loan_number)
                                )
-            payoff.make_scheduling_form()
+            payoff.make_scheduling_form(payoff.loan_number)
         elif values['LoanType'] == 'Coop HELOC':
-            payoff.add_to_excel()
-            payoff.make_invoice(375)
+            payoff.add_to_excel(payoff.heloc_number)
+            payoff.make_invoice(payoff.heloc_number, 375)
             if values['PDF'] == True:
                 convert_to_pdf('News/{} - {} - Invoice.docx'.format(payoff.borrower, payoff.heloc_number), 
                                'News/{} - {} - Invoice.pdf'.format(payoff.borrower, payoff.heloc_number)
@@ -377,9 +398,9 @@ while True:
                 convert_to_pdf('News/{} - {} - Coop30DayNotice.docx'.format(payoff.borrower, payoff.heloc_number), 
                                'News/{} - {} - Coop30DayNotice.pdf'.format(payoff.borrower, payoff.heloc_number)
                                )
-            payoff.make_update_sheet()
+            payoff.make_update_sheet(payoff.heloc_number)
             if values['PDF'] == True:
                 convert_to_pdf('News/{} - {} - UpdateSheet.docx'.format(payoff.borrower, payoff.heloc_number), 
                                'News/{} - {} - UpdateSheet.pdf'.format(payoff.borrower, payoff.heloc_number)
                                )
-            payoff.make_scheduling_form()
+            payoff.make_scheduling_form(payoff.heloc_number)
