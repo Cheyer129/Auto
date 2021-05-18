@@ -23,6 +23,9 @@ users = os.listdir('Toscano Files/USERS')
 wb = load_workbook('NEWS_Status.xlsx')
 ws = wb['Sheet1']
 
+# Accessing Word Application
+word = comtypes.client.CreateObject('Word.Application')
+
 # Emails HTMLs
 CemaEmail = open('Toscano Files/CemaEmail.html', 'r').read()
 CoopEmail = open('Toscano Files/CoopEmail.html', 'r').read()
@@ -278,17 +281,16 @@ class Payoffs:
 
 
 def convert_to_pdf(input_doc, output_pdf):
-    word = comtypes.client.CreateObject('Word.Application')
     tempdoc = word.Documents.Open(os.path.abspath(input_doc))
     tempdoc.SaveAs(os.path.abspath(output_pdf), FileFormat = 17)
     tempdoc.Close()
-    word.Quit()
 
 
 # Event Loop to process "events" and get the "values" of the inputs
 while True:
     event, values = window.read()
     if event == sg.WIN_CLOSED or event == 'Exit':
+        word.Quit()
         break
     if event == 'Enter':         
         # Assigning the values taken from the fields to our variable class
@@ -354,3 +356,19 @@ while True:
                 convert_to_pdf('News/{} - {} - Invoice.docx'.format(payoff.borrower, payoff.heloc_number), 'News/{} - {} - Invoice.pdf'.format(payoff.borrower, payoff.heloc_number))
                 convert_to_pdf('News/{} - {} - Coop30DayNotice.docx'.format(payoff.borrower, payoff.heloc_number), 'News/{} - {} - Coop30DayNotice.pdf'.format(payoff.borrower, payoff.heloc_number))
                 convert_to_pdf('News/{} - {} - UpdateSheet.docx'.format(payoff.borrower, payoff.heloc_number), 'News/{} - {} - UpdateSheet.pdf'.format(payoff.borrower, payoff.heloc_number))
+
+    if event == 'Clear':
+        window['-borrower-'].update('')
+        window['-loannumber-'].update('')
+        window['-helocnumber-'].update('')
+        window['-contact-'].update('')
+        window['-contactemail-'].update('')
+        window['-phonenumber-'].update('')
+        window['-residents-'].update('')
+        window['-streetaddress-'].update('')
+        window['-citystatezip-'].update('')
+        window['Output2'].update('')
+        window['Output'].update('Fields Cleared')
+
+window.close()
+
