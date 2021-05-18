@@ -183,8 +183,8 @@ class Payoffs:
         if self.loan_type == 'CEMA' or self.loan_type == 'CEMA HELOC':
             CemaScheduling.paragraphs[9].runs[2].text = self.contact
             CemaScheduling.paragraphs[9].runs[2].font.name = 'Times New Roman'
-            CemaScheduling.paragraphs[10].runs[7].text = self.contact_email
-            CemaScheduling.paragraphs[10].runs[7].font.name = 'Times New Roman'
+            CemaScheduling.paragraphs[10].runs[8].text = self.contact_email
+            CemaScheduling.paragraphs[10].runs[8].font.name = 'Times New Roman'
             CemaScheduling.paragraphs[13].runs[5].text = self.borrower
             CemaScheduling.paragraphs[13].runs[5].font.name = 'Times New Roman'
             CemaScheduling.paragraphs[13].runs[11].text = number
@@ -339,11 +339,11 @@ while True:
             payoff.make_invoice('{} & {}'.format(payoff.loan_number, payoff.heloc_number), 400)
             payoff.make_initial_notice()
             payoff.make_update_sheet(payoff.loan_number)
+            payoff.make_scheduling_form(payoff.loan_number)
             if values['PDF'] == True:
                 convert_to_pdf('News/{} - {} - Invoice.docx'.format(payoff.borrower, payoff.loan_number), 'News/{} - {} - Invoice.pdf'.format(payoff.borrower, payoff.loan_number))
                 convert_to_pdf('News/{} - {} - Coop30DayNotice.docx'.format(payoff.borrower, payoff.loan_number), 'News/{} - {} - Coop30DayNotice.pdf'.format(payoff.borrower, payoff.loan_number))
                 convert_to_pdf('News/{} - {} - UpdateSheet.docx'.format(payoff.borrower, payoff.loan_number), 'News/{} - {} - UpdateSheet.pdf'.format(payoff.borrower, payoff.loan_number))
-            payoff.make_scheduling_form(payoff.loan_number)
         elif values['LoanType'] == 'Coop HELOC':
             payoff.add_to_excel()
             payoff.make_invoice(payoff.heloc_number, 375)
