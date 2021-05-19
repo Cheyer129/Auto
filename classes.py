@@ -138,7 +138,10 @@ class Payoffs:
         Invoice.paragraphs[15].runs[0].font.name = 'Times New Roman'
         Invoice.paragraphs[27].runs[3].text = str(fee)
         Invoice.paragraphs[27].runs[3].font.name = 'Times New Roman'
-        Invoice.save('News/{} - {} - Invoice.docx'.format(self.borrower, number))
+        if self.loan_type == 'Coop 1st + HELOC':
+            Invoice.save('News/{} - {} - Invoice.docx'.format(self.borrower, self.loan_number))
+        else:
+            Invoice.save('News/{} - {} - Invoice.docx'.format(self.borrower, number))
 
     def make_update_sheet(self, number):
         if self.loan_type == 'CEMA' or self.loan_type == 'CEMA HELOC':
@@ -196,20 +199,22 @@ class Payoffs:
         if self.loan_type == 'Coop' or self.loan_type == 'Coop HELOC' or self.loan_type == 'Coop 1st + HELOC':
             CoopScheduling.paragraphs[9].runs[2].text = self.contact
             CoopScheduling.paragraphs[9].runs[2].font.name = 'Times New Roman'
-            CoopScheduling.paragraphs[10].runs[6].text = self.contact_email
-            CoopScheduling.paragraphs[10].runs[6].font.name = 'Times New Roman'
+            CoopScheduling.paragraphs[10].runs[7].text = self.contact_email
+            CoopScheduling.paragraphs[10].runs[7].font.name = 'Times New Roman'
             CoopScheduling.paragraphs[13].runs[4].text = self.borrower
             CoopScheduling.paragraphs[13].runs[4].font.name = 'Times New Roman'
             if self.loan_type == 'Coop':
                 CoopScheduling.paragraphs[13].runs[11].text = self.loan_number
                 CoopScheduling.paragraphs[13].runs[11].font.name = 'Times New Roman'
+                CoopScheduling.save('Scheduling Forms/{} - {} - Scheduling Form.docx'.format(self.borrower, number))
             elif self.loan_type == 'Coop HELOC':
                 CoopScheduling.paragraphs[13].runs[11].text = self.heloc_number
                 CoopScheduling.paragraphs[13].runs[11].font.name = 'Times New Roman'
+                CoopScheduling.save('Scheduling Forms/{} - {} - Scheduling Form.docx'.format(self.borrower, number))
             elif self.loan_type == 'Coop 1st + HELOC':
                 CoopScheduling.paragraphs[13].runs[11].text = '{} & {}'.format(self.loan_number, self.heloc_number)
                 CoopScheduling.paragraphs[13].runs[11].font.name = 'Times New Roman'
-            CoopScheduling.save('Scheduling Forms/{} - {} - Scheduling Form.docx'.format(self.borrower, number))
+                CoopScheduling.save('Scheduling Forms/{} - {} - Scheduling Form.docx'.format(self.borrower, self.loan_number))
 
     def make_initial_notice(self):
         if self.loan_type == 'CEMA':
@@ -235,7 +240,7 @@ class Payoffs:
             CemaHELOCNotice.paragraphs[17].runs[3].font.name = 'Times New Roman'
             CemaHELOCNotice.paragraphs[17].runs[8].text = self.heloc_number
             CemaHELOCNotice.paragraphs[17].runs[8].font.name = 'Times New Roman'
-            CemaHELOCNotice.save('News/{} - {} - CEMA30DayNotice.docx'.format(self.borrower, self.loan_number))
+            CemaHELOCNotice.save('News/{} - {} - CEMA30DayNotice.docx'.format(self.borrower, self.heloc_number))
         elif self.loan_type == 'Coop':
             CoopNotice.paragraphs[9].runs[2].text = self.contact
             CoopNotice.paragraphs[9].runs[2].font.name = 'Times New Roman'
@@ -281,7 +286,7 @@ class Payoffs:
 
 
 def convert_to_pdf(input_doc, output_pdf):
-    tempdoc = word.Documents.Open(os.path.abspath(input_doc))
+    tempdoc = word.Documents.Open(input_doc)
     tempdoc.SaveAs(os.path.abspath(output_pdf), FileFormat = 17)
     tempdoc.Close()
 
@@ -341,7 +346,7 @@ while True:
             payoff.make_invoice('{} & {}'.format(payoff.loan_number, payoff.heloc_number), 400)
             payoff.make_initial_notice()
             payoff.make_update_sheet(payoff.loan_number)
-            payoff.make_scheduling_form(payoff.loan_number)
+            payoff.make_scheduling_form('{} & {}'.format(payoff.loan_number, payoff.heloc_number))
             if values['PDF'] == True:
                 convert_to_pdf('News/{} - {} - Invoice.docx'.format(payoff.borrower, payoff.loan_number), 'News/{} - {} - Invoice.pdf'.format(payoff.borrower, payoff.loan_number))
                 convert_to_pdf('News/{} - {} - Coop30DayNotice.docx'.format(payoff.borrower, payoff.loan_number), 'News/{} - {} - Coop30DayNotice.pdf'.format(payoff.borrower, payoff.loan_number))
