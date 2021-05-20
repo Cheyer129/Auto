@@ -394,7 +394,7 @@ while True:
             convert_to_pdf('News/{} - {} - CEMA30DayNotice.docx'.format(payoff.borrower, payoff.heloc_number), 'News/{} - {} - CEMA30DayNotice.pdf'.format(payoff.borrower, payoff.heloc_number))
             convert_to_pdf('News/{} - {} - UpdateSheet.docx'.format(payoff.borrower, payoff.heloc_number), 'News/{} - {} - UpdateSheet.pdf'.format(payoff.borrower, payoff.heloc_number))
             if values['Notice'] == True:
-                payoff.send_notice('chrisheyer0@gmail.com')
+                payoff.send_notice(user, carboncopy)
         elif values['LoanType'] == 'Coop':
             payoff.add_to_excel()
             payoff.make_invoice(payoff.loan_number, 250)
@@ -405,7 +405,7 @@ while True:
             convert_to_pdf('News/{} - {} - Coop30DayNotice.docx'.format(payoff.borrower, payoff.loan_number), 'News/{} - {} - Coop30DayNotice.pdf'.format(payoff.borrower, payoff.loan_number))
             convert_to_pdf('News/{} - {} - UpdateSheet.docx'.format(payoff.borrower, payoff.loan_number), 'News/{} - {} - UpdateSheet.pdf'.format(payoff.borrower, payoff.loan_number))
             if values['Notice'] == True:
-                payoff.send_notice('chrisheyer0@gmail.com')
+                payoff.send_notice(user, carboncopy)
         elif values['LoanType'] == 'Coop 1st + HELOC':
             payoff.add_to_excel()
             payoff.make_invoice('{} & {}'.format(payoff.loan_number, payoff.heloc_number), 400)
@@ -416,7 +416,7 @@ while True:
             convert_to_pdf('News/{} - {} - Coop30DayNotice.docx'.format(payoff.borrower, payoff.loan_number), 'News/{} - {} - Coop30DayNotice.pdf'.format(payoff.borrower, payoff.loan_number))
             convert_to_pdf('News/{} - {} - UpdateSheet.docx'.format(payoff.borrower, payoff.loan_number), 'News/{} - {} - UpdateSheet.pdf'.format(payoff.borrower, payoff.loan_number))
             if values['Notice'] == True:
-                payoff.send_notice('chrisheyer0@gmail.com')
+                payoff.send_notice(user, carboncopy)
         elif values['LoanType'] == 'Coop HELOC':
             payoff.add_to_excel()
             payoff.make_invoice(payoff.heloc_number, 375)
@@ -427,7 +427,7 @@ while True:
             convert_to_pdf('News/{} - {} - Coop30DayNotice.docx'.format(payoff.borrower, payoff.heloc_number), 'News/{} - {} - Coop30DayNotice.pdf'.format(payoff.borrower, payoff.heloc_number))
             convert_to_pdf('News/{} - {} - UpdateSheet.docx'.format(payoff.borrower, payoff.heloc_number), 'News/{} - {} - UpdateSheet.pdf'.format(payoff.borrower, payoff.heloc_number))
             if values['Notice'] == True:
-                payoff.send_notice('chrisheyer0@gmail.com')
+                payoff.send_notice(user, carboncopy)
 
     if event == 'Clear':
         window['-borrower-'].update('')
