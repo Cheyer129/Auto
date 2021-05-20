@@ -26,10 +26,6 @@ ws = wb['Sheet1']
 # Accessing Word Application
 word = comtypes.client.CreateObject('Word.Application')
 
-# Emails HTMLs
-CemaEmail = open('Toscano Files/CemaEmail.html', 'r').read()
-CoopEmail = open('Toscano Files/CoopEmail.html', 'r').read()
-
 # Accessing Outlook Application
 outlook = client.Dispatch("Outlook.Application")
 
