@@ -108,7 +108,7 @@ class Payoffs:
         elif self.loan_type == 'Coop' or self.loan_type == 'Coop 1st + HELOC':
             newRowLocation = ws.max_row + 1
             ws.cell(column = 1, row = newRowLocation, value = self.borrower)
-            ws.cell(column = 2, row = newRowLocation, value = self.heloc_number)
+            ws.cell(column = 2, row = newRowLocation, value = self.loan_number)
             ws.cell(column = 5, row = newRowLocation, value = self.contact)
             ws.cell(column = 6, row = newRowLocation, value = self.contact_email)
             ws.cell(column = 3, row = newRowLocation, value = todaysdate.strftime("%m/%d/%Y"))
