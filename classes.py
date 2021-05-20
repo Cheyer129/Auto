@@ -297,9 +297,50 @@ class Payoffs:
             message.Send()
             window['Output'].update('CEMA Initial Notice sent to:')
             window['Output2'].update('{} - {}'.format(self.contact_email, datetime.datetime.now().strftime("%m/%d/%Y at %I:%M:%S %p")))
-
-
-
+        elif self.loan_type == 'CEMA HELOC':
+            message = outlook.CreateItem(0)
+            message.to = self.contact_email
+            message.CC = cc
+            message.Subject = '{} - {} - Initial Notice'.format(self.borrower, self.heloc_number)
+            message.HTMLBody = CemaEmail
+            message.Attachments.Add('{}/News/{} - {} - Invoice.pdf'.format(CurrentDirectory, self.borrower, self.heloc_number))
+            message.Attachments.Add('{}/News/{} - {} - CEMA30DayNotice.pdf'.format(CurrentDirectory, self.borrower, self.heloc_number))
+            message.Send()
+            window['Output'].update('CEMA Initial Notice sent to:')
+            window['Output2'].update('{} - {}'.format(self.contact_email, datetime.datetime.now().strftime("%m/%d/%Y at %I:%M:%S %p")))
+        elif self.loan_type == 'Coop':
+            message = outlook.CreateItem(0)
+            message.to = self.contact_email
+            message.CC = cc
+            message.Subject = '{} - {} - Initial Notice'.format(self.borrower, self.loan_number)
+            message.HTMLBody = CoopEmail
+            message.Attachments.Add('{}/News/{} - {} - Invoice.pdf'.format(CurrentDirectory, self.borrower, self.loan_number))
+            message.Attachments.Add('{}/News/{} - {} - Coop30DayNotice.pdf'.format(CurrentDirectory, self.borrower, self.loan_number))
+            message.Send()
+            window['Output'].update('Coop Initial Notice sent to:')
+            window['Output2'].update('{} - {}'.format(self.contact_email, datetime.datetime.now().strftime("%m/%d/%Y at %I:%M:%S %p")))
+        elif self.loan_type == 'Coop 1st + HELOC':
+            message = outlook.CreateItem(0)
+            message.to = self.contact_email
+            message.CC = cc
+            message.Subject = '{} - {} - Initial Notice'.format(self.borrower, self.loan_number)
+            message.HTMLBody = CoopEmail
+            message.Attachments.Add('{}/News/{} - {} - Invoice.pdf'.format(CurrentDirectory, self.borrower, self.loan_number))
+            message.Attachments.Add('{}/News/{} - {} - Coop30DayNotice.pdf'.format(CurrentDirectory, self.borrower, self.loan_number))
+            message.Send()
+            window['Output'].update('Coop Initial Notice sent to:')
+            window['Output2'].update('{} - {}'.format(self.contact_email, datetime.datetime.now().strftime("%m/%d/%Y at %I:%M:%S %p")))
+        elif self.loan_type == 'Coop HELOC':
+            message = outlook.CreateItem(0)
+            message.to = self.contact_email
+            message.CC = cc
+            message.Subject = '{} - {} - Initial Notice'.format(self.borrower, self.loan_number)
+            message.HTMLBody = CoopEmail
+            message.Attachments.Add('{}/News/{} - {} - Invoice.pdf'.format(CurrentDirectory, self.borrower, self.loan_number))
+            message.Attachments.Add('{}/News/{} - {} - Coop30DayNotice.pdf'.format(CurrentDirectory, self.borrower, self.loan_number))
+            message.Send()
+            window['Output'].update('Coop Initial Notice sent to:')
+            window['Output2'].update('{} - {}'.format(self.contact_email, datetime.datetime.now().strftime("%m/%d/%Y at %I:%M:%S %p")))
 
 
 
@@ -308,16 +349,6 @@ def convert_to_pdf(input_doc, output_pdf):
     tempdoc.SaveAs(os.path.abspath(output_pdf), FileFormat = 17)
     tempdoc.Close()
 
-# message = outlook.CreateItem(0)
-# message.To = ContactEmail
-# # message.CC = 'mweinstein@tatpc.com'
-# message.Subject = '{} - {} - Initial Notice'.format(Borrower, LoanNumber)
-# message.HTMLBody = CemaEmail
-# message.Attachments.Add('{}/News/{} - {} - Invoice.pdf'.format(CurrentDirectory, Borrower, LoanNumber))
-# message.Attachments.Add('{}/News/{} - {} - CEMA30DayNotice.pdf'.format(CurrentDirectory, Borrower, LoanNumber))
-# message.Send()
-# window['Output'].update('CEMA Initial Notice sent to:')
-# window['Output2'].update('{} - {}'.format(ContactEmail, datetime.datetime.now().strftime("%m/%d/%Y at %I:%M:%S %p")))
 
 # Event Loop to process "events" and get the "values" of the inputs
 while True:
@@ -348,6 +379,7 @@ while True:
             convert_to_pdf('News/{} - {} - Invoice.docx'.format(payoff.borrower, payoff.loan_number), 'News/{} - {} - Invoice.pdf'.format(payoff.borrower, payoff.loan_number))
             convert_to_pdf('News/{} - {} - CEMA30DayNotice.docx'.format(payoff.borrower, payoff.loan_number), 'News/{} - {} - CEMA30DayNotice.pdf'.format(payoff.borrower, payoff.loan_number))
             convert_to_pdf('News/{} - {} - UpdateSheet.docx'.format(payoff.borrower, payoff.loan_number), 'News/{} - {} - UpdateSheet.pdf'.format(payoff.borrower, payoff.loan_number))
+            payoff.send_notice('chrisheyer0@gmail.com')
         elif values['LoanType'] == 'CEMA HELOC':
             payoff.add_to_excel()
             payoff.make_invoice(payoff.heloc_number, 250)
@@ -357,6 +389,7 @@ while True:
             convert_to_pdf('News/{} - {} - Invoice.docx'.format(payoff.borrower, payoff.heloc_number), 'News/{} - {} - Invoice.pdf'.format(payoff.borrower, payoff.heloc_number))
             convert_to_pdf('News/{} - {} - CEMA30DayNotice.docx'.format(payoff.borrower, payoff.heloc_number), 'News/{} - {} - CEMA30DayNotice.pdf'.format(payoff.borrower, payoff.heloc_number))
             convert_to_pdf('News/{} - {} - UpdateSheet.docx'.format(payoff.borrower, payoff.heloc_number), 'News/{} - {} - UpdateSheet.pdf'.format(payoff.borrower, payoff.heloc_number))
+            payoff.send_notice('chrisheyer0@gmail.com')
         elif values['LoanType'] == 'Coop':
             payoff.add_to_excel()
             payoff.make_invoice(payoff.loan_number, 250)
@@ -366,6 +399,7 @@ while True:
             convert_to_pdf('News/{} - {} - Invoice.docx'.format(payoff.borrower, payoff.loan_number), 'News/{} - {} - Invoice.pdf'.format(payoff.borrower, payoff.loan_number))
             convert_to_pdf('News/{} - {} - Coop30DayNotice.docx'.format(payoff.borrower, payoff.loan_number), 'News/{} - {} - Coop30DayNotice.pdf'.format(payoff.borrower, payoff.loan_number))
             convert_to_pdf('News/{} - {} - UpdateSheet.docx'.format(payoff.borrower, payoff.loan_number), 'News/{} - {} - UpdateSheet.pdf'.format(payoff.borrower, payoff.loan_number))
+            payoff.send_notice('chrisheyer0@gmail.com')
         elif values['LoanType'] == 'Coop 1st + HELOC':
             payoff.add_to_excel()
             payoff.make_invoice('{} & {}'.format(payoff.loan_number, payoff.heloc_number), 400)
@@ -375,6 +409,7 @@ while True:
             convert_to_pdf('News/{} - {} - Invoice.docx'.format(payoff.borrower, payoff.loan_number), 'News/{} - {} - Invoice.pdf'.format(payoff.borrower, payoff.loan_number))
             convert_to_pdf('News/{} - {} - Coop30DayNotice.docx'.format(payoff.borrower, payoff.loan_number), 'News/{} - {} - Coop30DayNotice.pdf'.format(payoff.borrower, payoff.loan_number))
             convert_to_pdf('News/{} - {} - UpdateSheet.docx'.format(payoff.borrower, payoff.loan_number), 'News/{} - {} - UpdateSheet.pdf'.format(payoff.borrower, payoff.loan_number))
+            payoff.send_notice('chrisheyer0@gmail.com')
         elif values['LoanType'] == 'Coop HELOC':
             payoff.add_to_excel()
             payoff.make_invoice(payoff.heloc_number, 375)
@@ -384,6 +419,7 @@ while True:
             convert_to_pdf('News/{} - {} - Invoice.docx'.format(payoff.borrower, payoff.heloc_number), 'News/{} - {} - Invoice.pdf'.format(payoff.borrower, payoff.heloc_number))
             convert_to_pdf('News/{} - {} - Coop30DayNotice.docx'.format(payoff.borrower, payoff.heloc_number), 'News/{} - {} - Coop30DayNotice.pdf'.format(payoff.borrower, payoff.heloc_number))
             convert_to_pdf('News/{} - {} - UpdateSheet.docx'.format(payoff.borrower, payoff.heloc_number), 'News/{} - {} - UpdateSheet.pdf'.format(payoff.borrower, payoff.heloc_number))
+            payoff.send_notice('chrisheyer0@gmail.com')
 
     if event == 'Clear':
         window['-borrower-'].update('')
