@@ -1,14 +1,16 @@
 import PySimpleGUI as sg
 import docx
+from docx2pdf import convert
+import openpyxl
+import comtypes.client
+from openpyxl import load_workbook
+
 import datetime
 import time
-from docx2pdf import convert
 import os
 import win32com.client as client
 from pathlib import Path
-import openpyxl
-from openpyxl import load_workbook
-import comtypes.client
+
 
 # Creating Path
 CurrentDirectory = Path.cwd()
@@ -69,6 +71,7 @@ window = sg.Window('News Generator', layout, default_element_size = (45,1), loca
 
 
 class Payoffs:
+    '''Creating the payoffs class so that like varibales will be used across functions'''
     def __init__(self, loan_number, heloc_number, borrower, loan_type, contact, 
                  contact_email, phone_number, residents, street_address, city_state_zip):
         self.loan_number = loan_number
@@ -83,6 +86,7 @@ class Payoffs:
         self.city_state_zip = city_state_zip
 
     def add_to_excel(self):
+        '''Appends the borrow name, loan/heloc number, the date the file was assigned to excel, along with other contact info'''
         if self.loan_type == 'CEMA':
             newRowLocation = ws.max_row + 1
             ws.cell(column = 1, row = newRowLocation, value = self.borrower)
@@ -121,6 +125,7 @@ class Payoffs:
             wb.close()
     
     def make_invoice(self, number, fee):
+        '''Creates the Invoice'''
         Invoice.paragraphs[18].runs[2].text = self.borrower
         Invoice.paragraphs[18].runs[2].font.name = 'Times New Roman'
         Invoice.paragraphs[18].runs[8].text = number
@@ -141,6 +146,7 @@ class Payoffs:
             Invoice.save('News/{} - {} - Invoice.docx'.format(self.borrower, number))
 
     def make_update_sheet(self, number):
+        '''Creates Update Sheet'''
         if self.loan_type == 'CEMA' or self.loan_type == 'CEMA HELOC':
             CemaUpdateSheet.paragraphs[0].runs[0].text = self.borrower
             CemaUpdateSheet.paragraphs[0].runs[0].font.name = 'Times New Roman'
@@ -183,6 +189,7 @@ class Payoffs:
             CoopUpdateSheet.save('News/{} - {} - UpdateSheet.docx'.format(self.borrower, number))
     
     def make_scheduling_form(self, number):
+        '''Creates the scheduilng form'''
         if self.loan_type == 'CEMA' or self.loan_type == 'CEMA HELOC':
             CemaScheduling.paragraphs[9].runs[2].text = self.contact
             CemaScheduling.paragraphs[9].runs[2].font.name = 'Times New Roman'
@@ -214,6 +221,7 @@ class Payoffs:
                 CoopScheduling.save('Scheduling Forms/{} - {} - Scheduling Form.docx'.format(self.borrower, self.loan_number))
 
     def make_initial_notice(self):
+        '''Creates the 30 Day Notice'''
         if self.loan_type == 'CEMA':
             CemaNotice.paragraphs[9].runs[2].text = self.contact
             CemaNotice.paragraphs[9].runs[2].font.name = 'Times New Roman'
@@ -282,6 +290,7 @@ class Payoffs:
             CoopHELOCNotice.save('News/{} - {} - Coop30DayNotice.docx'.format(self.borrower, self.heloc_number))
 
     def send_notice(self, user, cc):
+        '''Sends the initial notice to the contact email'''
         if self.loan_type == 'CEMA':
             message = outlook.CreateItem(0)
             message.to = self.contact_email
@@ -341,6 +350,7 @@ class Payoffs:
 
 
 def convert_to_pdf(input_doc, output_pdf):
+    '''Converts docx to pdf'''
     tempdoc = word.Documents.Open(os.path.abspath(input_doc))
     tempdoc.SaveAs(os.path.abspath(output_pdf), FileFormat = 17)
     tempdoc.Close()
